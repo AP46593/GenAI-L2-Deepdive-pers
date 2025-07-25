@@ -1,0 +1,15 @@
+Question: What is the best way to get from downtown to the airport during rush hour?
+
+    Consider multiple options and evaluate each:
+
+    Option A: Take the highway.  
+        - Pros: Direct route  
+        - Cons: Likely traffic jams
+
+    Option B: Use the subway.  
+        - Pros: No traffic, predictable timing  
+        - Cons: May involve walking with luggage
+
+    Option C: Take a side-road route using GPS navigation  
+        - Pros: Might avoid traffic  
+        - Cons: Longer distance, unpredictable

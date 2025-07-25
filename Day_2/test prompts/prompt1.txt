@@ -1,0 +1,9 @@
+Task: Convert English sentences to passive voice.
+    Example 1:  
+        Active: The chef cooked the meal.  
+        Passive: The meal was cooked by the chef.
+    Example 2:  
+        Active: She will complete the project.  
+        Passive: The project will be completed by her.
+    If Active: The manager approved the request.  
+       What would be its Passive form :

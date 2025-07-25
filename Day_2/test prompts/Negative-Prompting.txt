@@ -1,0 +1,5 @@
+Summarize this article in 2–3 sentences.  
+        **Do not** include any quotes or direct sentences from the article.  
+        **Do not** mention the author's name.
+
+    Article: [insert article text here]

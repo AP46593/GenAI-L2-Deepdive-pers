@@ -1,0 +1,2 @@
+Question: If there are 5 apples and you eat 2, how many are left?
+    Explain its reasoning step-by-step before giving the answer
