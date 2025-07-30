@@ -14,7 +14,7 @@ prompt=ChatPromptTemplate.from_template(p_template)
 user_input=input("Please enter your question: ")
 full_prompt=prompt.format(question=user_input)
 
-llm = ChatOllama(model="llama3:8B", temperature=0.7)
+llm = ChatOllama(model="llama3", temperature=0.7)
 
 # create a RunnableSequence that combines the prompt template and the LLM
 # Invoke the LLM with the formatted prompt
