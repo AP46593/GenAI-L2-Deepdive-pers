@@ -9,8 +9,8 @@ from pathlib import Path
 # Set the model name you want to use
 # Uncomment the model you want to use by removing the '#' at the beginning of the line.
 #model_name='phi'
-#model_name='llama3:8B'
-model_name='deepseek-r1:8B'
+model_name='llama3:8B'
+#model_name='deepseek-r1:8B'
 #model_name='gemma3n:e4b'
 #model_name='gemma3'
 
@@ -18,8 +18,8 @@ model_name='deepseek-r1:8B'
 
 def load_prompt():
     #path = Path(__file__).parent / f"test prompts/Few-Shot.txt"
-    path = Path(__file__).parent / f"test prompts/Chain-of-Thoughts.txt"
-    #path = Path(__file__).parent / f"test prompts/Tree-of-Thoughts.txt"
+    #path = Path(__file__).parent / f"test prompts/Chain-of-Thoughts.txt"
+    path = Path(__file__).parent / f"test prompts/Tree-of-Thoughts.txt"
     #path = Path(__file__).parent / f"test prompts/Negative-Prompting.txt"
     return path.read_text() if path.exists() else "Hello"
 

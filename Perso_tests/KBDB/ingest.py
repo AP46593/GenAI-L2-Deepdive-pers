@@ -15,6 +15,11 @@ from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_ollama import OllamaEmbeddings
 from langchain_core.documents import Document
+from contextlib import contextmanager
+from typing import ContextManager      # add this import
+import tempfile
+from pathlib import Path
+from typing import Iterator 
 
 # --- Config --------------------------------------------------------------------
 DOC_DIR = Path("ref-docs")          # folder with source files
@@ -23,6 +28,51 @@ CHUNK_SIZE = 800
 CHUNK_OVERLAP = 200
 EMBED_MODEL = "nomic-embed-text"
 # -------------------------------------------------------------------------------
+
+
+@contextmanager
+def doc_to_docx(path: Path) -> Iterator[Path]:
+    """
+    Convert legacy .doc to a temp .docx using Word COM.
+    Falls back by raising if Word fails (caller decides what to do).
+    """
+    word = None
+    tmp: Path | None = None
+    try:
+        import win32com.client as win32, pywintypes
+
+        abs_path = path.resolve()
+
+        # Windows "long-path" prefix if > 260 chars
+        if len(str(abs_path)) >= 260:
+            abs_path = Path(r"\\?\{}".format(abs_path))
+
+        word = win32.Dispatch("Word.Application")
+        word.Visible = False
+
+        tmp = Path(tempfile.mktemp(suffix=".docx"))
+        try:
+            doc = word.Documents.Open(str(abs_path))
+        except pywintypes.com_error as e:
+            raise RuntimeError(f"Word could not open {path.name}: {e}")
+
+        doc.SaveAs(str(tmp), FileFormat=16)  # wdFormatDocumentDefault (.docx)
+        doc.Close(False)
+
+        yield tmp
+
+    finally:
+        if word is not None:
+            try:
+                word.Quit()
+            except Exception:
+                pass
+        if tmp is not None and tmp.exists():
+            try:
+                tmp.unlink()
+            except Exception:
+                pass
+
 
 def load_excel(path: Path) -> List[Document]:
     """Read each sheet of an Excel file into a Document."""
@@ -68,7 +118,15 @@ def load_single_file(path: Path) -> List[Document]:
     """Pick the right loader by file extension and return list[Document]."""
     suffix = path.suffix.lower()
     if suffix == ".docx":
-        return Docx2txtLoader(str(path)).load()
+        return load_docx_with_ocr(path)
+    if suffix == ".doc":
+        try:                                 # Word → temp .docx
+            import win32com.client           # requires pywin32
+            with doc_to_docx(path) as tmp:
+                return load_docx_with_ocr(tmp)
+        except Exception as e:
+            print(f"⚠️  Skipping {path.name}: {e}")
+            return []
     if suffix == ".pdf":
         return PyPDFLoader(str(path)).load()
     if suffix in (".txt", ".md"):
@@ -86,7 +144,7 @@ for file_path in DOC_DIR.glob("**/*"):          # recurse through sub‑folders
         # add filename as source for non‑Excel loaders
         for d in docs:
             d.metadata.setdefault("source", file_path.name)
-        all_docs.extend(load_docx_with_ocr(file_path))
+        all_docs.extend(docs) 
 
 if not all_docs:
     raise ValueError(f"No supported documents found in {DOC_DIR}")
