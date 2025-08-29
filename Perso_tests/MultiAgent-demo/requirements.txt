@@ -1,0 +1,18 @@
+# requirements.txt
+langchain
+langgraph
+ollama
+faiss-cpu
+tiktoken
+gradio
+python-docx
+PyMuPDF
+pypdf
+pytesseract
+pdfminer.six
+Pillow
+nomic
+sentence-transformers
+openai  # for consistent embedding interface, even with local models
+youtube-transcript-api  # for YouTube transcript extraction
+fitz  # PyMuPDF for PDF handling
