@@ -24,8 +24,8 @@ from typing import Iterator
 # --- Config --------------------------------------------------------------------
 DOC_DIR = Path("ref-docs")          # folder with source files
 INDEX_DIR = Path("faiss_index")            # output folder (overwritten)
-CHUNK_SIZE = 800
-CHUNK_OVERLAP = 200
+CHUNK_SIZE = 900
+CHUNK_OVERLAP = 400
 EMBED_MODEL = "nomic-embed-text"
 # -------------------------------------------------------------------------------
 
