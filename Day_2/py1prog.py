@@ -9,7 +9,7 @@ from pathlib import Path
 # Set the model name you want to use
 # Uncomment the model you want to use by removing the '#' at the beginning of the line.
 #model_name='phi'
-model_name='llama3:8B'
+model_name='llama3.2:latest'
 #model_name='deepseek-r1:8B'
 #model_name='gemma3n:e4b'
 #model_name='gemma3'
